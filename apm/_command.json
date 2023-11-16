@@ -1,0 +1,40 @@
+{
+  "cat": {
+    "file": "cat.py",
+    "trigger": [
+      "cat"
+    ]
+  },
+  "clear": {
+    "file": "clear.py",
+    "trigger": [
+      "clear",
+      "cls",
+      "^Lclear"
+    ]
+  },
+  "^C": {
+    "file": "^C.py",
+    "trigger": [
+      "^C"
+    ]
+  },
+  "help": {
+    "file": "help.py",
+    "trigger": [
+      "help"
+    ]
+  },
+  "exit": {
+    "file" : "exit.py",
+    "trigger": [
+      "exit"
+    ]
+  },
+  "apt": {
+    "file" : "apm.py",
+    "trigger": [
+      "apm"
+    ]
+  }
+}

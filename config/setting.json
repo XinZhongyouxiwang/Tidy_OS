@@ -1,0 +1,19 @@
+{
+  "startup": {
+    "check-password": true,
+    "startup-self-test": true
+  },
+  "terminal": {
+    "root-default-path": "D:\\code\\python\\pythonProject\\Tterminal"
+  },
+  "i_terminal": {
+    "simplify-error-messages": [
+      false,
+      false
+    ]
+  },
+  "user": {
+    "secondary-infilling": true,
+    "default-user": "root"
+  }
+}
