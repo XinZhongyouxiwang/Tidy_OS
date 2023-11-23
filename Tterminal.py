@@ -1,75 +1,28 @@
 import os
 import sys
 import keyboard
-from rich import print
+from rich.console import Console
 
 # 对整体terminal添加import 路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import terminal
-from terminal import parsing
-from terminal import file_driver
-from terminal import index_path
+import bin
+from bin import file_driver
 
-terminal_user = 'root'
-terminal_path = '/'
-terminal_name = 'DESKTOP'
-current_program = 'bash'
-setting = file_driver.read(f'{index_path}/config/setting.json', 'json')
-debug = True
-
-def clean():
-    keyboard.press_and_release('home')
-    keyboard.write('clear ')
-    keyboard.press_and_release("enter")
+console = Console()
 
 
-keyboard.add_hotkey('ctrl+l', clean)
-
-
-def init():
-    if debug:
-        setting_config = file_driver.read(f'{index_path}/config/setting.json', 'json')
-        setting_config['i_terminal']['simplify-error-messages'] = [False, False]
-        file_driver.write(f'{index_path}/config/setting.json', setting_config, 'json')
-    else:
-        setting_config = file_driver.read(f'{index_path}/config/setting.json', 'json')
-        setting_config['i_terminal']['simplify-error-messages'] = [True, True]
-        file_driver.write(f'{index_path}/config/setting.json', setting_config, 'json')
-
-
-if __name__ == '__main__':
-    init()
-    if len(sys.argv) > 2:
-        if '--debug' in sys.argv[1:]:
-            if '--exit' in sys.argv[1:]:
-                print(parsing.i_terminal(''.join(sys.argv[1:])))
-                exit(0)
-            else:
-                print(parsing.i_terminal(''.join(sys.argv[1:])))
+class Terminal:
+    def __init__(self, path: str = None, app_path: str = None, run: tuple = False):
+        if path is None:
+            self.work_directory = os.getcwd()
         else:
-            if '--exit' in sys.argv[1:]:
-                parsing.i_terminal(''.join(sys.argv[1:]))
-                exit(0)
+            if file_driver.isfile(path):
+                self.work_directory = path
             else:
-                parsing.i_terminal(''.join(sys.argv[1:]))
 
-
-    # physical_directory 赋值
-    if setting['terminal']['root-default-path'] == '/':
-        setting['terminal']['root-default-path'] = terminal.work_directory
-        file_driver.write(f'{index_path}/config/setting.json', setting, 'json')
-    print(os.getcwd())
-    while True:
-        if terminal_user == 'root':
-            print(f'\r{terminal_user}@{terminal_name}:{terminal_path}[green]#[/green] ', end='')
-            command = str(input())
-            if debug:
-                print(parsing.i_terminal(command))
-            else:
-                parsing.i_terminal(command)
-
-        else:
-            print(f'\r{terminal_user}@{terminal_name}:{terminal_path}[green]$[/green] ', end='')
-            command = str(input())
-            print(parsing.i_terminal(command))
+        if app_path is not None:
+            self.app_path = os.path.join(self.work_directory, self.app_path)
+        if file_driver.exist(self.app_path):
+            self.app_icon = None
+            self.terminal_name = 'Tterminal'
